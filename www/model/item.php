@@ -3,7 +3,7 @@ require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
 // DB利用
-
+//単体商品のデータ取得
 function get_item($db, $item_id){
   $sql = "
     SELECT
@@ -22,6 +22,7 @@ function get_item($db, $item_id){
   return fetch_query($db, $sql);
 }
 
+//複数商品のデータ取得
 function get_items($db, $is_open = false){
   $sql = '
     SELECT
@@ -43,6 +44,7 @@ function get_items($db, $is_open = false){
   return fetch_all_query($db, $sql);
 }
 
+
 function get_all_items($db){
   return get_items($db);
 }
@@ -59,18 +61,24 @@ function regist_item($db, $name, $price, $stock, $status, $image){
   return regist_item_transaction($db, $name, $price, $stock, $status, $image, $filename);
 }
 
+//商品登録時の処理
 function regist_item_transaction($db, $name, $price, $stock, $status, $image, $filename){
+  //トランザクション開始
   $db->beginTransaction();
+  //商品追加時の処理
   if(insert_item($db, $name, $price, $stock, $filename, $status) 
     && save_image($image, $filename)){
+    //エラーがなければコミット
     $db->commit();
     return true;
   }
+  //エラーがあればロールバック
   $db->rollback();
   return false;
   
 }
 
+//商品追加時の処理
 function insert_item($db, $name, $price, $stock, $filename, $status){
   $status_value = PERMITTED_ITEM_STATUSES[$status];
   $sql = "
@@ -87,6 +95,7 @@ function insert_item($db, $name, $price, $stock, $filename, $status){
 
   return execute_query($db, $sql);
 }
+
 
 function update_item_status($db, $item_id, $status){
   $sql = "
@@ -116,17 +125,22 @@ function update_item_stock($db, $item_id, $stock){
   return execute_query($db, $sql);
 }
 
+//商品削除時の処理
 function destroy_item($db, $item_id){
   $item = get_item($db, $item_id);
+  //itemが存在しなければエラー
   if($item === false){
     return false;
   }
+  //トランザクション開始
   $db->beginTransaction();
   if(delete_item($db, $item['item_id'])
     && delete_image($item['image'])){
+    //item情報・画像が削除されればコミット
     $db->commit();
     return true;
   }
+  //エラーがあればロールバック
   $db->rollback();
   return false;
 }
