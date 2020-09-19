@@ -10,6 +10,7 @@ function redirect_to($url){
   exit;
 }
 
+//getで入力内容取得
 function get_get($name){
   if(isset($_GET[$name]) === true){
     return $_GET[$name];
@@ -17,6 +18,7 @@ function get_get($name){
   return '';
 }
 
+//postで入力内容取得
 function get_post($name){
   if(isset($_POST[$name]) === true){
     return $_POST[$name];
@@ -24,6 +26,7 @@ function get_post($name){
   return '';
 }
 
+//ファイル変数取得
 function get_file($name){
   if(isset($_FILES[$name]) === true){
     return $_FILES[$name];
@@ -31,6 +34,7 @@ function get_file($name){
   return array();
 }
 
+// セッション変数に保存
 function get_session($name){
   if(isset($_SESSION[$name]) === true){
     return $_SESSION[$name];

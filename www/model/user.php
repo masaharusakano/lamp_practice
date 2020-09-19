@@ -2,6 +2,7 @@
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
+//user情報の取得
 function get_user($db, $user_id){
   $sql = "
     SELECT
@@ -19,6 +20,7 @@ function get_user($db, $user_id){
   return fetch_query($db, $sql);
 }
 
+//user情報の取得(name)で絞り込み
 function get_user_by_name($db, $name){
   $sql = "
     SELECT
@@ -41,6 +43,7 @@ function login_as($db, $name, $password){
   if($user === false || $user['password'] !== $password){
     return false;
   }
+  // セッション変数にuser_idを保存
   set_session('user_id', $user['user_id']);
   return $user;
 }
@@ -51,14 +54,16 @@ function get_login_user($db){
   return get_user($db, $login_user_id);
 }
 
+//新規登録時の処理
 function regist_user($db, $name, $password, $password_confirmation) {
   if( is_valid_user($name, $password, $password_confirmation) === false){
     return false;
   }
-  
+  //エラーがなければ新規登録処理へ
   return insert_user($db, $name, $password);
 }
 
+//ユーザー種別の設定
 function is_admin($user){
   return $user['type'] === USER_TYPE_ADMIN;
 }
@@ -70,6 +75,7 @@ function is_valid_user($name, $password, $password_confirmation){
   return $is_valid_user_name && $is_valid_password ;
 }
 
+//user_nameのエラーチェック
 function is_valid_user_name($name) {
   $is_valid = true;
   if(is_valid_length($name, USER_NAME_LENGTH_MIN, USER_NAME_LENGTH_MAX) === false){
@@ -83,6 +89,7 @@ function is_valid_user_name($name) {
   return $is_valid;
 }
 
+//passwordのエラーチェック
 function is_valid_password($password, $password_confirmation){
   $is_valid = true;
   if(is_valid_length($password, USER_PASSWORD_LENGTH_MIN, USER_PASSWORD_LENGTH_MAX) === false){
@@ -100,6 +107,7 @@ function is_valid_password($password, $password_confirmation){
   return $is_valid;
 }
 
+//userの新規登録処理
 function insert_user($db, $name, $password){
   $sql = "
     INSERT INTO
