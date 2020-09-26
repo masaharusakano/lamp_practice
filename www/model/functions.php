@@ -6,7 +6,7 @@ function dd($var){
 }
 
 function redirect_to($url){
-  header('Location: ' . $url);
+  header('Location:' . $url);
   exit;
 }
 
