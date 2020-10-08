@@ -5,6 +5,8 @@ require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
 require_once MODEL_PATH . 'item.php';
 require_once MODEL_PATH . 'cart.php';
+require_once MODEL_PATH . 'order.php';
+require_once MODEL_PATH . 'details.php';
 
 // ログインチェックを行うため、セッションを開始する
 session_start();
@@ -40,6 +42,24 @@ if(purchase_carts($db, $carts) === false){
 
 //合計金額の取得
 $total_price = sum_carts($carts);
+// トランザクション開始
+$db->beginTransaction();
+if(insert_order($db, $user['user_id'], $total_price) ===false){
+  set_error('購入履歴に保存できませんでした。');
+  $db->rollback();
+  //カートページへリダイレクト
+  redirect_to(CART_URL);
+}
+$order_id = $db->lastInsertId('order_id');
+foreach($carts as $cart){
+  if(insert_details($db, $order_id, $cart['item_id'], $cart['amount'],$cart['price']) ===false){
+    set_error('購入詳細に保存できませんでした。');
+    $db->rollback();
+    //カートページへリダイレクト
+    redirect_to(CART_URL);
+  }
+}
+$db->commit();
 
 //finish_view.phpを読み込み
 include_once '../view/finish_view.php';
