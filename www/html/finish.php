@@ -52,7 +52,7 @@ if(insert_order($db, $user['user_id'], $total_price) ===false){
 }
 $order_id = $db->lastInsertId('order_id');
 foreach($carts as $cart){
-  if(insert_details($db, $order_id, $cart['item_id'], $cart['amount'],$cart['price']) ===false){
+  if(insert_details($db, $order_id, $cart['item_id'], $cart['amount'], $cart['price']) ===false){
     set_error('購入詳細に保存できませんでした。');
     $db->rollback();
     //カートページへリダイレクト

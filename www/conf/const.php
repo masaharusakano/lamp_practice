@@ -19,6 +19,8 @@ define('LOGIN_URL', '/login.php');
 define('LOGOUT_URL', '/logout.php');
 define('HOME_URL', '/index.php');
 define('CART_URL', '/cart.php');
+define('ORDER_URL', '/order.php');
+define('DETAILS_URL', '/details.php');
 define('FINISH_URL', '/finish.php');
 define('ADMIN_URL', '/admin.php');
 

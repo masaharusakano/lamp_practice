@@ -6,13 +6,16 @@ require_once MODEL_PATH . 'db.php';
 function get_user_orders($db, $user_id){
     $sql = "
       SELECT
-        order.oder_id,
-        order.user_id,
-        order.total_price
+        `order`.order_id,
+        `order`.user_id,
+        `order`.total_price,
+        `order`.created
       FROM
-        orders
+        `order`
       WHERE
-        order.user_id = :user_id
+        `order`.user_id = :user_id
+      ORDER BY
+        created DESC
     ";
     $params = array(':user_id' => $user_id);
     return fetch_all_query($db, $sql, $params);
@@ -22,11 +25,14 @@ function get_user_orders($db, $user_id){
 function get_all_user_orders($db, $user_id){
     $sql = "
       SELECT
-        order.oder_id,
-        order.user_id,
-        order.total_price
+        `order`.order_id,
+        `order`.user_id,
+        `order`.total_price,
+        `order`.created
       FROM
-        orders
+        `order`
+      ORDER BY
+        created DESC
     ";
     return fetch_all_query($db, $sql);
 }

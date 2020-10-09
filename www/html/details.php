@@ -19,10 +19,16 @@ if(is_logined() === false){
 // PDOを取得
 $db = get_db_connect();
 // PDOを利用してログインユーザーのデータを取得
-$user = get_login_user($db);
+$user = get_login_user($db); 
 
-//特定のuser_idの購入履歴を取得
-$user_details = get_user_details($db, $user['user_id']);
+$order_id = get_post('order_id');
+//特定の購入履歴を取得
+$user_details = get_user_details($db, $order_id);
+
+$user_order = get_user_order($db, $order_id);
+
+//カート内の合計金額の取得
+$subtotal_price = sum_details($details);
 
 //cart_view.phpを読み込み
 include_once VIEW_PATH . 'details_view.php';
