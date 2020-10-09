@@ -21,11 +21,13 @@ $db = get_db_connect();
 // PDOを利用してログインユーザーのデータを取得
 $user = get_login_user($db);
 
-//特定のuser_idの購入履歴を取得
-$user_orders = get_user_orders($db, $user['user_id']);
-
-//全てのuserの購入履歴を取得
-$all_user_orders = get_all_user_orders($db, $user_id);
+if(is_admin($user)){ 
+  //全てのuserの購入履歴を取得
+  $user_orders = get_all_user_orders($db, $user_id);
+} else {
+  //特定のuser_idの購入履歴を取得
+  $user_orders = get_user_orders($db, $user['user_id']);
+}
 
 //cart_view.phpを読み込み
 include_once VIEW_PATH . 'order_view.php';
