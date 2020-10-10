@@ -13,9 +13,6 @@
 
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
 
-  
-
-        
       <?php if(count((array)$user_orders) > 0){ ?>
         <table class="table table-bordered">
           <tr>

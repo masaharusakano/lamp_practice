@@ -22,6 +22,8 @@ $user = get_login_user($db);
 //ステータスがopenの場合、商品情報の取得
 $items = get_open_items($db);
 
+//ステータスがopenの商品の中でランキング情報取得
+$items_ranking = get_open_items_ranking($db);
 
 //トークンの生成
 $token = get_csrf_token();
