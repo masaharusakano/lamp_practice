@@ -24,6 +24,7 @@ $items = get_open_items($db);
 
 //ステータスがopenの商品の中でランキング情報取得
 $items_ranking = get_open_items_ranking($db);
+$ranking_number = 1;
 
 //トークンの生成
 $token = get_csrf_token();

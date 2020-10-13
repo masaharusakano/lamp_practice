@@ -50,7 +50,8 @@
         <div class="col-6 item">
           <div class="card h-100 text-center">
             <div class="card-header">
-              <?php print(h($item_ranking['name'])); ?>
+              <?php print h($ranking_number) ."位" . h($item_ranking['name']); ?>
+              <?php $ranking_number++; ?>
             </div>
             <figure class="card-body">
               <img class="card-img" src="<?php print(h(IMAGE_PATH . $item_ranking['image'])); ?>">
