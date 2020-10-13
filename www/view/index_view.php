@@ -43,7 +43,27 @@
       <?php } ?>
       </div>
     </div>
+    <h2>人気ランキングBEST3</h2>
+    <div class="card-deck">
+      <div class="row">
+      <?php foreach((array)$items_ranking as $item_ranking){ ?>
+        <div class="col-6 item">
+          <div class="card h-100 text-center">
+            <div class="card-header">
+              <?php print h($ranking_number) ."位" . h($item_ranking['name']); ?>
+              <?php $ranking_number++; ?>
+            </div>
+            <figure class="card-body">
+              <img class="card-img" src="<?php print(h(IMAGE_PATH . $item_ranking['image'])); ?>">
+              <figcaption>
+                <?php print(h(number_format($item_ranking['price']))); ?>円
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      <?php } ?>
+      </div>
+    </div>
   </div>
-  
 </body>
 </html>

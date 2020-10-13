@@ -40,10 +40,36 @@ function get_items($db, $is_open = false){
       WHERE status = 1
     ';
   }
-
   return fetch_all_query($db, $sql);
 }
 
+function get_items_ranking($db){
+  $sql = '
+    SELECT
+      items.item_id, 
+      items.name,
+      items.stock,
+      items.price,
+      items.image,
+      items.status,
+      SUM(details.amount)
+    FROM
+      items
+    JOIN
+      details
+    ON
+      items.item_id = details.item_id
+    WHERE 
+      items.status = 1
+    GROUP BY
+      details.item_id
+    ORDER BY
+      SUM(details.amount) DESC
+    LIMIT
+      3
+    ';
+  return fetch_all_query($db, $sql);
+}
 
 function get_all_items($db){
   return get_items($db);
@@ -51,6 +77,10 @@ function get_all_items($db){
 
 function get_open_items($db){
   return get_items($db, true);
+}
+
+function get_open_items_ranking($db){
+  return get_items_ranking($db);
 }
 
 function regist_item($db, $name, $price, $stock, $status, $image){
